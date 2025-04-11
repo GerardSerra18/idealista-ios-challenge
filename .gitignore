@@ -1,0 +1,41 @@
+
+# Xcode
+DerivedData/
+build/
+*.xcworkspace
+*.xcuserstate
+*.xcuserdata
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+
+# Xcode project user data
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+
+# SwiftPM
+.build/
+Package.resolved
+
+# CocoaPods
+Pods/
+
+# Fastlane
+fastlane/report.xml
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Archives
+*.xcarchive
+
+# IDEs
+.idea/
+*.iml
+
+# Logs
+*.log
+
+# macOS
+.DS_Store
+

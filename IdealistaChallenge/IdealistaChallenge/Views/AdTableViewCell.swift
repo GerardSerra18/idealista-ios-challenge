@@ -213,17 +213,19 @@ class AdTableViewCell: UITableViewCell {
 
     func configure(with ad: AdModel, isFavorite: Bool, favoriteDate: Date? = nil) {
         operationTypeLabel.text = "\(ad.operation.capitalized) - \(ad.propertyType.capitalized)"
-        titleLabel.text = "Piso en \(ad.address)"
+        titleLabel.text = String(format: NSLocalizedString("located_in", comment: ""), ad.address)
         priceLabel.text = formattedPrice(ad: ad)
-        surfaceLabel.text = "\(Int(ad.size)) m² - \(ad.exterior ? "Exterior" : "Interior")"
-        detailsLabel.text = "Rooms: \(ad.rooms) | Bathrooms: \(ad.bathrooms)\nFloor: \(ad.floor)"
+        let surfaceText = NSLocalizedString(ad.exterior ? "exterior" : "interior", comment: "")
+        surfaceLabel.text = String(format: NSLocalizedString("surface_format", comment: ""), "\(Int(ad.size))", surfaceText)
+        detailsLabel.text = String(format: NSLocalizedString("rooms_format", comment: ""), ad.rooms) + " | " + String(format: NSLocalizedString("bathrooms_format", comment: ""), ad.bathrooms) + "\n" + String(format: NSLocalizedString("floor_format", comment: ""), ad.floor)
+
         images = ad.multimedia.images.compactMap { $0.url }
         
         let iconName = isFavorite ? "heart.fill" : "heart"
         favoriteButton.setImage(UIImage(systemName: iconName), for: .normal)
         
         let neighborhood = ad.neighborhood ?? ""
-        locationLabel.text = " Ubicado en \(neighborhood), \(ad.district)"
+        locationLabel.text = String(format: NSLocalizedString("located_in", comment: ""), neighborhood, ad.district)
 
         //features
         featureStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }

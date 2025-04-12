@@ -16,11 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        let listVC = ListViewController()
-        
-        let navController = UINavigationController(rootViewController: listVC)
-        
-        window?.rootViewController = navController
+        let splashVC = SplashViewController()
+        window?.rootViewController = splashVC
         window?.makeKeyAndVisible()
         
         return true

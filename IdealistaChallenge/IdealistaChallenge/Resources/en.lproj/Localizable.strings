@@ -1,0 +1,28 @@
+/* 
+  Localizable.strings
+  IdealistaChallenge
+
+  Created by Gerard Serra Rodriguez on 12/4/25.
+  
+*/
+"ad_detail_title" = "Property Detail";
+"listing_title" = "Available Properties";
+"see_more" = "See more";
+"see_less" = "See less";
+"favorite_added" = "Added to favorites on %@";
+"favorite_removed" = "Removed from favorites";
+"housing_for_sale" = "Housing for sale";
+"housing_for_rent" = "Housing for rent";
+"energy_certification" = "Energy certification: %@";
+"exterior" = "Exterior";
+"interior" = "Interior";
+"located_in" = "Flat in %@";
+"surface_format" = "%@ m² - %@";
+"rooms_format" = "Rooms: %d";
+"bathrooms_format" = "Bathrooms: %d";
+"floor_format" = "Floor: %@";
+"lift" = "Lift";
+"status_format" = "Status: %@";
+"community_cost_format" = "Community: €%d/month";
+"favorites_title" = "Favorites";
+"empty_favorites_message" = "You haven’t marked any properties as favorites yet.\nOnce you do, you’ll find them here for quick access.";

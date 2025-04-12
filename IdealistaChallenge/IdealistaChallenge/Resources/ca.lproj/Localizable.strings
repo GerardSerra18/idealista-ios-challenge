@@ -1,0 +1,28 @@
+/* 
+  Localizable.strings
+  IdealistaChallenge
+
+  Created by Gerard Serra Rodriguez on 12/4/25.
+  
+*/
+"ad_detail_title" = "Detall de l'immoble";
+"listing_title" = "Propietats disponibles";
+"see_more" = "Veure més";
+"see_less" = "Veure menys";
+"favorite_added" = "Afegit a favorits el %@";
+"favorite_removed" = "Eliminat de favorits";
+"housing_for_sale" = "Habitatge en venda";
+"housing_for_rent" = "Habitatge de lloguer";
+"energy_certification" = "Certificació energètica: %@";
+"exterior" = "Exterior";
+"interior" = "Interior";
+"located_in" = "Pis a %@";
+"surface_format" = "%@ m² - %@";
+"rooms_format" = "Habitacions: %d";
+"bathrooms_format" = "Banys: %d";
+"floor_format" = "Planta: %@";
+"lift" = "Ascensor";
+"status_format" = "Estat: %@";
+"community_cost_format" = "Comunitat: %d €/mes";
+"favorites_title" = "Preferits";
+"empty_favorites_message" = "Encara no tens cap pis o casa marcada com a preferida.\nQuan n’afegeixis algun, el veuràs aquí per tenir-lo sempre a mà.";

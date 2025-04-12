@@ -11,6 +11,7 @@ class ListViewModel {
     
     var ads: [AdModel] = []
     private var favoriteAds: [String: Date] = [:]
+    private let storage = FavoriteStorage()
     
     func fetchAds(completion: @escaping () -> Void) {
         APIService.shared.fetchAds { [weak self] result in
@@ -57,18 +58,18 @@ class ListViewModel {
     }
     
     func toggleFavorite(for ad: AdModel) {
-        if let _ = favoriteAds[ad.propertyCode] {
-            favoriteAds.removeValue(forKey: ad.propertyCode)
+        if isFavorite(ad: ad) {
+            storage.removeFavorite(adCode: ad.propertyCode)
         } else {
-            favoriteAds[ad.propertyCode] = Date()
+            storage.saveFavorite(adCode: ad.propertyCode, date: Date())
         }
     }
     
     func isFavorite(ad: AdModel) -> Bool {
-        return favoriteAds[ad.propertyCode] != nil
+        return storage.isFavorite(adCode: ad.propertyCode)
     }
     
     func favoriteDate(for ad: AdModel) -> Date? {
-        return favoriteAds[ad.propertyCode]
+        return storage.favoriteDate(for: ad.propertyCode)
     }
 }

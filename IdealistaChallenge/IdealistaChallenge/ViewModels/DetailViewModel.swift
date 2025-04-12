@@ -17,9 +17,9 @@ class DetailViewModel {
 
     var titleText: String {
         if detail.propertyType == "homes" && detail.operation == "sale" {
-            return "Vivienda en venta"
+            return NSLocalizedString("housing_for_sale", comment: "")
         } else if detail.operation == "rent" {
-            return "Vivienda en alquiler"
+            return  NSLocalizedString("housing_for_rent", comment: "")
         } else {
             return "\(detail.propertyType.capitalized) - \(detail.operation.capitalized)"
         }
@@ -33,28 +33,27 @@ class DetailViewModel {
         return detail.propertyComment
     }
 
-    var locationText: String {
-        return "Lat: \(detail.ubication.latitude), Lon: \(detail.ubication.longitude)"
-    }
-
     var featuresText: String {
         var items: [String] = []
         let mc = detail.moreCharacteristics
 
-        if let roomNumber = mc.roomNumber { items.append("\(roomNumber) habitaciones") }
-        if let bathNumber = mc.bathNumber { items.append("\(bathNumber) baños") }
+        if let roomNumber = mc.roomNumber { items.append(String(format: NSLocalizedString("rooms_format", comment: ""), roomNumber)) }
+        if let bathNumber = mc.bathNumber { items.append(String(format: NSLocalizedString("bathrooms_format", comment: ""), bathNumber)) }
         if let constructedArea = mc.constructedArea { items.append("\(constructedArea) m²") }
-        if let floor = mc.floor { items.append("Planta \(floor)") }
-        if let exterior = mc.exterior { items.append(exterior ? "Exterior" : "Interior") }
-        if let lift = mc.lift, lift { items.append("Ascensor") }
-        if let status = mc.status { items.append("Estado: \(status.capitalized)") }
-        if let community = mc.communityCosts { items.append("Comunidad: \(Int(community)) €/mes") }
+        if let floor = mc.floor { items.append(String(format: NSLocalizedString("floor_format", comment: ""), floor)) }
+        if let exterior = mc.exterior {
+            let exteriorText = NSLocalizedString(exterior ? "exterior" : "interior", comment: "")
+            items.append(exteriorText)
+        }
+        if let lift = mc.lift, lift { items.append(NSLocalizedString("lift", comment: "")) }
+        if let status = mc.status { items.append(String(format: NSLocalizedString("status_format", comment: ""), status.capitalized)) }
+        if let community = mc.communityCosts { items.append(String(format: NSLocalizedString("community_cost_format", comment: ""), Int(community))) }
 
         return items.joined(separator: " • ")
     }
 
     var energyLabelText: String {
-        return "Energy Certification: \(detail.energyCertification.energyConsumption.type.uppercased())"
+        return String(format: NSLocalizedString("energy_certification", comment: ""), detail.energyCertification.energyConsumption.type.uppercased())
     }
 
     var imageURLs: [URL] {

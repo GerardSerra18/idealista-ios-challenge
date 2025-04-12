@@ -18,7 +18,7 @@ class ListViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
-        title = "Propiedades disponibles"
+        title = NSLocalizedString("listing_title", comment: "")
         
         setupNavigationBarStyle()
         setupTableView()
@@ -62,6 +62,12 @@ class ListViewController: UIViewController {
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         navigationController?.navigationBar.tintColor = .black
+        
+        //Favorites ads
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "heart.fill"), style: .plain, target: self, action: #selector(showFavoritesSheet)
+        )
+        navigationItem.rightBarButtonItem?.tintColor = .red
     }
     
     private func updateFavoriteState(for ad: AdModel, cell: AdTableViewCell) {
@@ -81,9 +87,9 @@ class ListViewController: UIViewController {
         
         let message: String
         if isNowFavorite, let date = date {
-            message = "Añadido a favoritos el \(formatter.string(from: date))"
+            message = String(format: NSLocalizedString("favorite_added", comment: ""), formatter.string(from: date))
         } else {
-            message = "Eliminado de favoritos"
+            message = NSLocalizedString("favorite_removed", comment: "")
         }
 
         toastLabel.text = message
@@ -128,6 +134,11 @@ class ListViewController: UIViewController {
                 self.loadingIndicator.stopAnimating()
             }
         }
+    }
+    
+    @objc private func showFavoritesSheet() {
+        let favoritesVC = FavoritesViewController()
+        navigationController?.pushViewController(favoritesVC, animated: true)
     }
 }
 

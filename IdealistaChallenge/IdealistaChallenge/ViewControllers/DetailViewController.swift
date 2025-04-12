@@ -47,7 +47,7 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = "Detalle del inmueble"
+        title = NSLocalizedString("ad_detail_title", comment: "")
         setupUI()
         configureView()
     }
@@ -71,7 +71,7 @@ class DetailViewController: UIViewController {
         descriptionLabel.font = .systemFont(ofSize: 15)
         descriptionLabel.numberOfLines = 0
         descriptionLabel.textAlignment = .justified
-        seeMoreButton.setTitle("Ver más", for: .normal)
+        seeMoreButton.setTitle(NSLocalizedString("see_more", comment: ""), for: .normal)
         seeMoreButton.addTarget(self, action: #selector(toggleDescription), for: .touchUpInside)
         seeMoreButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
         seeMoreButton.contentHorizontalAlignment = .center
@@ -130,7 +130,6 @@ class DetailViewController: UIViewController {
         energyLabel.text = viewModel.energyLabelText
         descriptionLabel.text = viewModel.descriptionText
         descriptionLabel.numberOfLines = 10
-        seeMoreButton.setTitle("Ver más", for: .normal)
 
         featureIconsStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
         for feature in viewModel.featureIcons {
@@ -141,7 +140,7 @@ class DetailViewController: UIViewController {
     @objc private func toggleDescription() {
         isExpanded.toggle()
         descriptionLabel.numberOfLines = isExpanded ? 0 : 4
-        seeMoreButton.setTitle(isExpanded ? "Ver menos" : "Ver más", for: .normal)
+        seeMoreButton.setTitle(isExpanded ? NSLocalizedString("see_less", comment: "") : NSLocalizedString("see_more", comment: ""), for: .normal)
     }
 
 }

@@ -16,7 +16,13 @@ class DetailViewModel {
     }
 
     var titleText: String {
-        return "\(detail.propertyType.capitalized) - \(detail.operation.capitalized)"
+        if detail.propertyType == "homes" && detail.operation == "sale" {
+            return "Vivienda en venta"
+        } else if detail.operation == "rent" {
+            return "Vivienda en alquiler"
+        } else {
+            return "\(detail.propertyType.capitalized) - \(detail.operation.capitalized)"
+        }
     }
 
     var priceText: String {
@@ -59,6 +65,14 @@ class DetailViewModel {
         return extractFeatures(from: detail).map {
             makeFeatureView(icon: $0.icon, text: $0.text)
         }
+    }
+    
+    var latitude: Double {
+        return detail.ubication.latitude
+    }
+    
+    var longitude: Double {
+        return detail.ubication.longitude
     }
 }
 

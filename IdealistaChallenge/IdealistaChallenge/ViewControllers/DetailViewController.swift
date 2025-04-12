@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class DetailViewController: UIViewController {
     
@@ -14,6 +15,13 @@ class DetailViewController: UIViewController {
     private let stack = UIStackView()
     private var isExpanded = false
     private let seeMoreButton = UIButton(type: .system)
+    
+    private let titleLabel = UILabel()
+    private let priceLabel = UILabel()
+    private let featureIconsStack = UIStackView()
+    private let featuresLabel = UILabel()
+    private let energyLabel = UILabel()
+    private let descriptionLabel = UILabel()
 
     
     init(viewModel: DetailViewModel) {
@@ -36,13 +44,6 @@ class DetailViewController: UIViewController {
         return collection
     }()
 
-    private let titleLabel = UILabel()
-    private let priceLabel = UILabel()
-    private let featureIconsStack = UIStackView()
-    private let featuresLabel = UILabel()
-    private let energyLabel = UILabel()
-    private let descriptionLabel = UILabel()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -57,7 +58,7 @@ class DetailViewController: UIViewController {
         stack.spacing = 16
         stack.translatesAutoresizingMaskIntoConstraints = false
 
-        [titleLabel, priceLabel, featureIconsStack, featuresLabel, energyLabel, descriptionLabel].forEach {
+        [titleLabel, priceLabel, featureIconsStack, featuresLabel, energyLabel, descriptionLabel, seeMoreButton].forEach {
             stack.addArrangedSubview($0)
         }
 
@@ -73,7 +74,22 @@ class DetailViewController: UIViewController {
         seeMoreButton.setTitle("Ver más", for: .normal)
         seeMoreButton.addTarget(self, action: #selector(toggleDescription), for: .touchUpInside)
         seeMoreButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
-        seeMoreButton.contentHorizontalAlignment = .leading
+        seeMoreButton.contentHorizontalAlignment = .center
+        
+        //MapView for the location
+        let mapView = AdMapView(latitude: viewModel.latitude, longitude: viewModel.longitude)
+        let mapHostingController = UIHostingController(rootView: mapView)
+        addChild(mapHostingController)
+        if let descriptionIndex = stack.arrangedSubviews.firstIndex(of: descriptionLabel) {
+            stack.insertArrangedSubview(mapHostingController.view, at: descriptionIndex)
+            let spacer = UIView()
+            spacer.translatesAutoresizingMaskIntoConstraints = false
+            spacer.heightAnchor.constraint(equalToConstant: 2).isActive = true
+            stack.insertArrangedSubview(spacer, at: descriptionIndex + 1)
+        }
+        mapHostingController.didMove(toParent: self)
+        mapHostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        mapHostingController.view.heightAnchor.constraint(equalToConstant: 200).isActive = true
 
         featureIconsStack.axis = .horizontal
         featureIconsStack.spacing = 12
@@ -86,7 +102,6 @@ class DetailViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(collectionView)
         scrollView.addSubview(stack)
-        stack.addArrangedSubview(seeMoreButton)
 
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),

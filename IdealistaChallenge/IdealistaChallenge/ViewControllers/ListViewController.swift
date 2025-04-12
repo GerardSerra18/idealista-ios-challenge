@@ -11,6 +11,8 @@ class ListViewController: UIViewController {
     
     private let viewModel = ListViewModel()
     private let tableView = UITableView()
+    private let refreshControl = UIRefreshControl()
+    private let loadingIndicator = UIActivityIndicatorView(style: .large)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +30,9 @@ class ListViewController: UIViewController {
     
     private func setupTableView() {
         view.addSubview(tableView)
+        
+        refreshControl.addTarget(self, action: #selector(simulateLoading), for: .valueChanged)
+        tableView.refreshControl = refreshControl
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -108,6 +113,19 @@ class ListViewController: UIViewController {
                 toastLabel.alpha = 0.0
             }) { _ in
                 toastLabel.removeFromSuperview()
+            }
+        }
+    }
+    
+    @objc private func simulateLoading() {
+        loadingIndicator.startAnimating()
+        
+        //Simulates a network delay of 2 seconds to provide better effect
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.viewModel.fetchAds {
+                self.tableView.reloadData()
+                self.refreshControl.endRefreshing()
+                self.loadingIndicator.stopAnimating()
             }
         }
     }

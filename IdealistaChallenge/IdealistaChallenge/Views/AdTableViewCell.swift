@@ -22,9 +22,11 @@ class AdTableViewCell: UITableViewCell {
     private let container: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark ? UIColor.secondarySystemBackground : .systemBackground
+        }
         view.layer.cornerRadius = 12
-        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowColor = UIColor.label.cgColor
         view.layer.shadowOpacity = 0.1
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowRadius = 4
@@ -107,7 +109,7 @@ class AdTableViewCell: UITableViewCell {
     private let locationLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13)
-        label.textColor = .systemGray
+        label.textColor = .secondaryLabel
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -124,7 +126,7 @@ class AdTableViewCell: UITableViewCell {
     private let badgeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 11, weight: .bold)
-        label.textColor = .white
+        label.textColor = .label
         label.backgroundColor = .systemYellow
         label.layer.cornerRadius = 6
         label.clipsToBounds = true

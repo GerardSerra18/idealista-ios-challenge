@@ -16,8 +16,9 @@ class ListViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
-        title = "🏡 Propiedades disponibles"
+        title = "Propiedades disponibles"
         
+        setupNavigationBarStyle()
         setupTableView()
         
         viewModel.fetchAds { [weak self] in
@@ -42,6 +43,20 @@ class ListViewController: UIViewController {
         tableView.separatorStyle = .singleLine
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 250
+    }
+    
+    private func setupNavigationBarStyle() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .systemYellow
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor.black,
+            .font: UIFont.systemFont(ofSize: 18, weight: .semibold)
+        ]
+
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.tintColor = .black
     }
     
     private func updateFavoriteState(for ad: AdModel, cell: AdTableViewCell) {

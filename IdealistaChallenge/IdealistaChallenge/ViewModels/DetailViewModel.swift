@@ -5,7 +5,7 @@
 //  Created by Gerard Serra Rodriguez on 12/4/25.
 //
 
-import Foundation
+import UIKit
 
 class DetailViewModel {
     
@@ -33,22 +33,17 @@ class DetailViewModel {
 
     var featuresText: String {
         var items: [String] = []
-        
-        if let roomNumber = detail.moreCharacteristics.roomNumber {
-            items.append("🛏 \(roomNumber) habitaciones")
-        }
-        if let bathNumber = detail.moreCharacteristics.bathNumber {
-            items.append("🛁 \(bathNumber) baños")
-        }
-        if let constructedArea = detail.moreCharacteristics.constructedArea {
-            items.append("📐 \(constructedArea) m²")
-        }
-        if let floor = detail.moreCharacteristics.floor {
-            items.append("🏢 Planta \(floor)")
-        }
-        if let exterior = detail.moreCharacteristics.exterior {
-            items.append(exterior ? "🌇 Exterior" : "🏠 Interior")
-        }
+        let mc = detail.moreCharacteristics
+
+        if let roomNumber = mc.roomNumber { items.append("\(roomNumber) habitaciones") }
+        if let bathNumber = mc.bathNumber { items.append("\(bathNumber) baños") }
+        if let constructedArea = mc.constructedArea { items.append("\(constructedArea) m²") }
+        if let floor = mc.floor { items.append("Planta \(floor)") }
+        if let exterior = mc.exterior { items.append(exterior ? "Exterior" : "Interior") }
+        if let lift = mc.lift, lift { items.append("Ascensor") }
+        if let status = mc.status { items.append("Estado: \(status.capitalized)") }
+        if let community = mc.communityCosts { items.append("Comunidad: \(Int(community)) €/mes") }
+
         return items.joined(separator: " • ")
     }
 
@@ -58,6 +53,12 @@ class DetailViewModel {
 
     var imageURLs: [URL] {
         return detail.multimedia.images.compactMap { $0.url }
+    }
+
+    var featureIcons: [UIView] {
+        return extractFeatures(from: detail).map {
+            makeFeatureView(icon: $0.icon, text: $0.text)
+        }
     }
 }
 

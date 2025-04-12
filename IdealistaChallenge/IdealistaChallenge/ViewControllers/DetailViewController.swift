@@ -10,6 +10,11 @@ import UIKit
 class DetailViewController: UIViewController {
     
     private let viewModel: DetailViewModel
+    private let scrollView = UIScrollView()
+    private let stack = UIStackView()
+    private var isExpanded = false
+    private let seeMoreButton = UIButton(type: .system)
+
     
     init(viewModel: DetailViewModel) {
         self.viewModel = viewModel
@@ -20,8 +25,6 @@ class DetailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private let scrollView = UIScrollView()
-    private let stack = UIStackView()
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -35,6 +38,7 @@ class DetailViewController: UIViewController {
 
     private let titleLabel = UILabel()
     private let priceLabel = UILabel()
+    private let featureIconsStack = UIStackView()
     private let featuresLabel = UILabel()
     private let energyLabel = UILabel()
     private let descriptionLabel = UILabel()
@@ -42,6 +46,7 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        title = "Detalle del inmueble"
         setupUI()
         configureView()
     }
@@ -52,17 +57,27 @@ class DetailViewController: UIViewController {
         stack.spacing = 16
         stack.translatesAutoresizingMaskIntoConstraints = false
 
-        [titleLabel, priceLabel, featuresLabel, energyLabel, descriptionLabel].forEach {
-            $0.numberOfLines = 0
+        [titleLabel, priceLabel, featureIconsStack, featuresLabel, energyLabel, descriptionLabel].forEach {
             stack.addArrangedSubview($0)
         }
 
         titleLabel.font = .systemFont(ofSize: 20, weight: .bold)
         priceLabel.font = .systemFont(ofSize: 18, weight: .semibold)
         featuresLabel.font = .systemFont(ofSize: 14)
+        featuresLabel.textColor = .secondaryLabel
+        featuresLabel.numberOfLines = 0
         energyLabel.font = .systemFont(ofSize: 14, weight: .medium)
-        energyLabel.textColor = .systemGreen
         descriptionLabel.font = .systemFont(ofSize: 15)
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.textAlignment = .justified
+        seeMoreButton.setTitle("Ver más", for: .normal)
+        seeMoreButton.addTarget(self, action: #selector(toggleDescription), for: .touchUpInside)
+        seeMoreButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
+        seeMoreButton.contentHorizontalAlignment = .leading
+
+        featureIconsStack.axis = .horizontal
+        featureIconsStack.spacing = 12
+        featureIconsStack.distribution = .fillProportionally
 
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -71,6 +86,7 @@ class DetailViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(collectionView)
         scrollView.addSubview(stack)
+        stack.addArrangedSubview(seeMoreButton)
 
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -98,7 +114,21 @@ class DetailViewController: UIViewController {
         featuresLabel.text = viewModel.featuresText
         energyLabel.text = viewModel.energyLabelText
         descriptionLabel.text = viewModel.descriptionText
+        descriptionLabel.numberOfLines = 10
+        seeMoreButton.setTitle("Ver más", for: .normal)
+
+        featureIconsStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        for feature in viewModel.featureIcons {
+            featureIconsStack.addArrangedSubview(feature)
+        }
     }
+    
+    @objc private func toggleDescription() {
+        isExpanded.toggle()
+        descriptionLabel.numberOfLines = isExpanded ? 0 : 4
+        seeMoreButton.setTitle(isExpanded ? "Ver menos" : "Ver más", for: .normal)
+    }
+
 }
 
 // MARK: - CollectionView for images

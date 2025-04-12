@@ -65,8 +65,18 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if let ad = viewModel.ad(at: indexPath.row) {
-            print("Selected ad: \(ad.propertyCode)")
+        
+        viewModel.fetchAdDetail { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let detail):
+                    let detailVM = DetailViewModel(detail: detail)
+                    let detailVC = DetailViewController(viewModel: detailVM)
+                    self?.navigationController?.pushViewController(detailVC, animated: true)
+                case .failure(let error):
+                    print("Error fetching detail: \(error.localizedDescription)")
+                }
+            }
         }
     }
 }

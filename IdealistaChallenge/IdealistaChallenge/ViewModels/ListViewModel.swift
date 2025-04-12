@@ -26,6 +26,19 @@ class ListViewModel {
         }
     }
     
+    /// I know that this API always returns the same detail and does not support filtering by propertyCode,
+    /// but I tried to make my best and I did the logic structured in a way that I could extend it to fetch for a specific detail in a real scenario !
+    func fetchAdDetail(completion: @escaping (Result<AdDetailModel, Error>) -> Void) {
+        APIService.shared.fetchAdDetail { result in
+            switch result {
+            case .success(let adDetails):
+                completion(.success(adDetails))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
     func setAds(_ newAds: [AdModel]) {
         self.ads = newAds
     }

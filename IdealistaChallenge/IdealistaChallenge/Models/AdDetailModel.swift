@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AdDetail: Decodable {
+struct AdDetailModel: Decodable {
     let adid: Int
     let price: Double
     let priceInfo: DetailPriceInfo

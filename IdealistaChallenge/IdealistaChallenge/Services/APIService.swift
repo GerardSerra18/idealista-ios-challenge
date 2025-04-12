@@ -17,6 +17,7 @@ class APIService {
     
     
     //MARK: - Ads call
+    
     func fetchAds(completion: @escaping(Result<[AdModel], Error>) -> Void ) {
         let task = URLSession.shared.dataTask(with: listURL) { data, response, error in
             if let error = error {
@@ -41,4 +42,29 @@ class APIService {
         task.resume()
     }
     
+    //MARK: - Detail call
+    
+    func fetchAdDetail(completion: @escaping(Result<AdDetailModel, Error>) -> Void ) {
+        let task = URLSession.shared.dataTask(with: detailURL) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data else {
+                let err = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Any data received"])
+                completion(.failure(err))
+                return
+            }
+
+            do {
+                let adDetail = try JSONDecoder().decode(AdDetailModel.self, from: data)
+                completion(.success(adDetail))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+        
+        task.resume()
+    }
 }

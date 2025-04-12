@@ -10,6 +10,8 @@ import UIKit
 class AdTableViewCell: UITableViewCell {
 
     static let identifier = "AdTableViewCell"
+    
+    var onFavoriteTapped: (() -> Void)?
 
     var images: [URL] = [] {
         didSet {
@@ -79,6 +81,14 @@ class AdTableViewCell: UITableViewCell {
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
+    
+    private let favoriteButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "heart"), for: .normal)
+        button.tintColor = .systemRed
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -92,6 +102,7 @@ class AdTableViewCell: UITableViewCell {
 
     private func setupUI() {
         contentView.addSubview(collectionView)
+        contentView.addSubview(favoriteButton)
         contentView.addSubview(operationTypeLabel)
         contentView.addSubview(headerStack)
         contentView.addSubview(surfaceLabel)
@@ -105,12 +116,15 @@ class AdTableViewCell: UITableViewCell {
             collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             collectionView.heightAnchor.constraint(equalToConstant: 320),
+            
+            favoriteButton.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 12),
+            favoriteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
 
             operationTypeLabel.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 8),
             operationTypeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
             operationTypeLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
 
-            headerStack.topAnchor.constraint(equalTo: operationTypeLabel.bottomAnchor, constant: 4),
+            headerStack.topAnchor.constraint(equalTo: favoriteButton.bottomAnchor, constant: 8),
             headerStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
             headerStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
 
@@ -123,6 +137,8 @@ class AdTableViewCell: UITableViewCell {
             detailsLabel.trailingAnchor.constraint(equalTo: headerStack.trailingAnchor),
             detailsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12)
         ])
+        
+        favoriteButton.addTarget(self, action: #selector(favoriteTapped), for: .touchUpInside)
     }
 
     private func setupCollectionView() {
@@ -131,13 +147,16 @@ class AdTableViewCell: UITableViewCell {
         collectionView.register(ImageCell.self, forCellWithReuseIdentifier: "ImageCell")
     }
 
-    func configure(with ad: AdModel) {
+    func configure(with ad: AdModel, isFavorite: Bool, favoriteDate: Date? = nil) {
         operationTypeLabel.text = "\(ad.operation.capitalized) - \(ad.propertyType.capitalized)"
         titleLabel.text = "Piso en \(ad.address)"
         priceLabel.text = formattedPrice(ad: ad)
         surfaceLabel.text = "\(Int(ad.size)) m² - \(ad.exterior ? "Exterior" : "Interior")"
         detailsLabel.text = "Rooms: \(ad.rooms) | Bathrooms: \(ad.bathrooms)\nFloor: \(ad.floor)"
         images = ad.multimedia.images.compactMap { $0.url }
+        
+        let iconName = isFavorite ? "heart.fill" : "heart"
+        favoriteButton.setImage(UIImage(systemName: iconName), for: .normal)
     }
 
     private func formattedPrice(ad: AdModel) -> String {
@@ -145,7 +164,10 @@ class AdTableViewCell: UITableViewCell {
         let suffix = ad.priceInfo.price.currencySuffix
         return "\(amount) \(suffix)"
     }
-
+    
+    @objc private func favoriteTapped() {
+        onFavoriteTapped?()
+    }
 }
 
 extension AdTableViewCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {

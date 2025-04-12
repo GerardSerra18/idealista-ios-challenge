@@ -43,6 +43,59 @@ class ListViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 250
     }
+    
+    private func updateFavoriteState(for ad: AdModel, cell: AdTableViewCell) {
+        let isFavorite = viewModel.isFavorite(ad: ad)
+        let date = viewModel.favoriteDate(for: ad)
+        cell.configure(with: ad, isFavorite: isFavorite, favoriteDate: date)
+        showFavoriteToast(for: ad, isNowFavorite: isFavorite, date: date)
+    }
+    
+    private func showFavoriteToast(for ad: AdModel, isNowFavorite: Bool, date: Date?) {
+        let toastLabel = UILabel()
+        
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        formatter.locale = Locale.current
+        
+        let message: String
+        if isNowFavorite, let date = date {
+            message = "Añadido a favoritos el \(formatter.string(from: date))"
+        } else {
+            message = "Eliminado de favoritos"
+        }
+
+        toastLabel.text = message
+        toastLabel.textColor = .white
+        toastLabel.backgroundColor = .systemYellow
+        toastLabel.textAlignment = .center
+        toastLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        toastLabel.alpha = 0.0
+        toastLabel.layer.cornerRadius = 12
+        toastLabel.clipsToBounds = true
+        toastLabel.numberOfLines = 0
+        toastLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(toastLabel)
+
+        NSLayoutConstraint.activate([
+            toastLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
+            toastLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+            toastLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
+            toastLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
+        ])
+
+        UIView.animate(withDuration: 0.3, animations: {
+            toastLabel.alpha = 1.0
+        }) { _ in
+            UIView.animate(withDuration: 0.3, delay: 2.0, options: .curveEaseOut, animations: {
+                toastLabel.alpha = 0.0
+            }) { _ in
+                toastLabel.removeFromSuperview()
+            }
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource & UITableViewDelegate
@@ -58,7 +111,17 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
               let ad = viewModel.ad(at: indexPath.row) else {
             return UITableViewCell()
         }
-        cell.configure(with: ad)
+        
+        let isFavorite = viewModel.isFavorite(ad: ad)
+        let favoriteDate = viewModel.favoriteDate(for: ad)
+        cell.configure(with: ad, isFavorite: isFavorite, favoriteDate: favoriteDate)
+
+        cell.onFavoriteTapped = { [weak self] in
+            guard let self = self else { return }
+            self.viewModel.toggleFavorite(for: ad)
+            self.updateFavoriteState(for: ad, cell: cell)
+        }
+
         
         return cell
     }

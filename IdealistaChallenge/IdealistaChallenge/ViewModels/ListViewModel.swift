@@ -10,6 +10,7 @@ import Foundation
 class ListViewModel {
     
     var ads: [AdModel] = []
+    private var favoriteAds: [String: Date] = [:]
     
     func fetchAds(completion: @escaping () -> Void) {
         APIService.shared.fetchAds { [weak self] result in
@@ -53,5 +54,21 @@ class ListViewModel {
         } else {
             return nil
         }
+    }
+    
+    func toggleFavorite(for ad: AdModel) {
+        if let _ = favoriteAds[ad.propertyCode] {
+            favoriteAds.removeValue(forKey: ad.propertyCode)
+        } else {
+            favoriteAds[ad.propertyCode] = Date()
+        }
+    }
+    
+    func isFavorite(ad: AdModel) -> Bool {
+        return favoriteAds[ad.propertyCode] != nil
+    }
+    
+    func favoriteDate(for ad: AdModel) -> Date? {
+        return favoriteAds[ad.propertyCode]
     }
 }

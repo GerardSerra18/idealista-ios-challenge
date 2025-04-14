@@ -1,56 +1,153 @@
-# idealista iOS Challenge
-The idealista iOS team is on the lookout for a new teammate! We’re on a mission to find someone who’s ready to dive into the exciting (and sometimes wild) world of iOS development. From building cool new features to squashing bugs, crafting pixel-perfect UIs, and making sure everything runs smoothly and securely — we’ve got plenty to keep you on your toes.
+# 🏡 Idealista iOS Challenge
 
-Think you’re up for the challenge? We could really use your skills to create the next generation of awesome features that will take our app to new heights. Whether it’s making sure our users have a seamless experience or pushing the limits of performance, we need someone who’s ready to jump in and make a real impact.
+Welcome to my submission for the **Idealista iOS Challenge**!  
+This project is a clean, testable, and scalable UIKit-based iOS application with touches of SwiftUI, developed as part of the coding challenge provided by Idealista.
 
-Here at idealista, we’re all about clean, maintainable code and solid testable components. If you love turning great ideas into reality, this might just be the perfect challenge for you!
+---
 
-&nbsp;
+## 🚀 Getting Started
 
-### 🚀 Getting Started
-1. Read the **minimum requirements**.
-2. Fork this repository.
-3. Start coding and have fun!
+### ✅ Requirements
 
-&nbsp;
+- **Xcode 16.0**
+- **iOS 16 to iOS 18**
 
-### 📱 Task
-Build a small app that allows users to browse through a list of ads and view ad details on a separate screen.
+---
 
-&nbsp;
+## 📦 Setup
 
-### 🌐 API
-- List: [https://idealista.github.io/ios-challenge/list.json](https://idealista.github.io/ios-challenge/list.json)  
-- Detail: [https://idealista.github.io/ios-challenge/detail.json](https://idealista.github.io/ios-challenge/detail.json) *Please note: the response is always the same*.
+Follow these steps to get the project running locally:
 
-&nbsp;
+### 1. **Clone the Repository**
+
+```bash
+git clone https://github.com/GerardSerra18/idealista-ios-challenge.git
+cd idealista-ios-challenge
+```
+
+### 2. **Checkout the Development Branch**
+
+```bash
+git checkout initialChallenge
+```
+
+> No merge is needed — all implementation was done in the `initialChallenge` branch.
+
+### 3. **Open the Project in Xcode**
+
+```bash
+open IdealistaChallenge.xcodeproj
+```
+
+### 4. **Build & Run the App**
+
+1. Select a simulator (e.g. iPhone 16).
+2. Press `⌘R` or click ▶️ to run the app.
+
+---
+
+## 📱 Features
 
 ### ✅ Minimum Requirements
-- The app must run on **Xcode 16.0** and be compatible with **iOS 16** through **iOS 18**.
-- The app should include at least **two screens**:
-  - A **listing screen** displaying a collection of ads.
-  - A **detail screen** for viewing individual ad information.
-- The code must be written in **Swift** and use the **UIKit** framework.
-- Implement functionality to allow users to **favorite ads**.
-  - If an ad is favorited, display the **date** it was favorited.
-- Use the provided **API endpoints** to fetch and display ad data.
-- Only use **third-party libraries** if absolutely necessary. We value clean and lightweight implementations.
 
-&nbsp;
+- Two main screens:
+  - List of property ads
+  - Ad detail screen
+- Favorite/unfavorite ads
+- Show date when the ad was favorited
+- Data fetched from remote API
+- Built with UIKit
+- No third-party libraries used
 
-### 🎁 Optional Bonus Tasks (For extra kudos!)
-1. Implement **pull-to-refresh** functionality on the listing screen.
-2. **Localize** the app into at least one additional language.
-3. Add **tests** for key components of the app.
-4. Add support for **Dark Mode** to ensure the app looks great in all environments.
-5. Incorporate some **SwiftUI** code alongside UIKit.
-6. Implement **persistent storage** using Core Data, SwiftData, Realm, or any other suitable solution.
-7. Add **iPad support** with a responsive layout.
-8. Show the location of the ad using a **map** view, indicating its position.
-9. Feel free to go beyond the requirements and **improve the app** in any way you think is best — we love creativity!
+### ✅ Bonus Features Implemented
 
-&nbsp;
+- Pull-to-refresh on listing screen
+- Dark Mode support
+- SwiftUI integration (MapView)
+- Localization: English, Spanish, Catalan
+- Favorite ads persist using `UserDefaults`
+- Favorites view with a separate screen
+- Unit tests and UI tests included
+- Custom splash screen
 
-### 🎉 Once You’ve Finished
-1. Email us at [tlfernandez@idealista.com](mailto:tlfernandez@idealista.com) with your repository link you'd like our iOS team to review, or send the project folder (including the `.git` directory).
-2. Celebrate with a beer after a well done job! 🍺
+---
+
+## 📁 Project Structure
+
+```bash
+├── Models/            # Data models
+├── Views/             # UIKit views & components
+├── ViewControllers/   # List, Detail, Favorites, Splash
+├── ViewModels/        # MVVM logic
+├── API/               # APIService
+├── Utils/             # Utils functions
+├── Resources/         # .strings files for 3 languages
+├── Tests/             # Unit tests (ViewModels, Storage)
+├── UI Tests/          # Basic launch test
+└── Assets/            # Images and UI resources
+```
+
+---
+
+## 🧪 Running Tests
+
+The project includes both **unit tests** and **UI tests**.
+
+### 🧪 Unit Tests
+
+- Located in: `IdealistaChallengeTests`
+- Includes:
+  - `ListViewModelTests`
+  - `FavoriteStorageTests`
+
+### 📲 UI Tests
+
+- Located in: `IdealistaChallengeUITests`
+- Includes a basic launch test.
+
+### ▶️ Run All Tests
+
+In Xcode:
+
+1. Select the `IdealistaChallenge` scheme.
+2. Press `⌘U` to run all tests.
+3. All tests will execute automatically (no additional setup required).
+
+---
+
+## 🌍 Localization
+
+The app supports **three languages**:
+
+- English (`en`)
+- Spanish (`es`)
+- Catalan (`ca`)
+
+Set your simulator or device language to test different translations.
+
+---
+
+## 🧠 Technical Notes
+
+- Clean MVVM architecture for scalability
+- All UI built programmatically (no Storyboards)
+- Reusable UI components for property features
+- API designed to be extendable despite static response
+- SwiftUI used for `MapView`, embedded into UIKit with `UIHostingController`
+
+---
+
+## ✨ Highlights
+
+- Custom toast feedback on favorite toggle
+- Adaptive layout with dynamic type and dark/light support
+- Elegant and minimal UI inspired by the Idealista app
+
+---
+
+## 👨‍💻 Author
+
+**Gerard Serra Rodriguez**  
+
+---
+
